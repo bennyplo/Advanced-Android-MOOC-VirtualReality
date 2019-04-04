@@ -27,18 +27,15 @@ public class MainActivity extends AppCompatActivity {
         //read the text file from the selected filepath
         //set to read the file path first
         ParcelFileDescriptor parcelFileDescriptor=getContentResolver().openFileDescriptor(filepath,"r");
-        //get the descriptor of the file
-        FileDescriptor fileDescriptor=parcelFileDescriptor.getFileDescriptor();
-        //get the file input stream from the file descriptor
-        FileInputStream fileInputStream = new FileInputStream(fileDescriptor);
-        //BufferedReader bufferedReader =  new BufferedReader( new InputStreamReader(fileInputStream,"UTF-8");
+        FileDescriptor fileDescriptor=parcelFileDescriptor.getFileDescriptor();//get the descriptor of the file
+        FileInputStream fileInputStream = new FileInputStream(fileDescriptor);//get the file input stream from the file descriptor
         StringBuilder stringBuilder=new StringBuilder();//create a string builder -> to create the string
         //read the text from the file
         int i=0;
         while((i=fileInputStream.read())!=-1){
-            //System.out.print((char)i);
-            stringBuilder.append(i);
+            stringBuilder.append((char)i);
         }
+        Log.i("ReadTextFile",stringBuilder.toString());
         fileInputStream.close();
         parcelFileDescriptor.close();
         return stringBuilder.toString();
