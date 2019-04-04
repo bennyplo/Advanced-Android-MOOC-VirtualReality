@@ -15,9 +15,9 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private final float[] mMVMatrix=new float[16];//model view matrix
     private final float[] mModelMatrix=new float[16];//model  matrix
     private CharacterA mcharA;
-    private float mAngle;
-    private float mXAngle;
-    private float mZoom;
+    private float mAngle;//y-rotation angle
+    private float mXAngle;//x-rotation angle
+    private float mZoom;//zoom factor
 
 
     @Override
@@ -81,7 +81,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
 
         mcharA.draw(mMVPMatrix);
     }
-
+    //set the rotational angles and zoom factors
     public float getAngle() {
         return mAngle;
     }
