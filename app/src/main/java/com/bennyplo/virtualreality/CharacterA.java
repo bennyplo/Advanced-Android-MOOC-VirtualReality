@@ -1,4 +1,4 @@
-package com.bennyplo.designgraphicswithopengl;
+package com.bennyplo.virtualreality;
 
 import android.opengl.GLES32;
 

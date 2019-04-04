@@ -1,4 +1,4 @@
-package com.bennyplo.designgraphicswithopengl;
+package com.bennyplo.virtualreality;
 
 import android.opengl.GLES32;
 import android.opengl.GLSurfaceView;
@@ -15,12 +15,17 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private final float[] mMVMatrix=new float[16];//model view matrix
     private final float[] mModelMatrix=new float[16];//model  matrix
     private CharacterA mcharA;
+    private float mAngle;
+    private float mXAngle;
+    private float mZoom;
+
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         mcharA=new CharacterA();
+        mZoom=1.0f;
     }
     public static void checkGlError(String glOperation) {
         int error;
@@ -58,14 +63,15 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         Matrix.setIdentityM(mMVPMatrix,0);//set the model view projection matrix to an identity matrix
         Matrix.setIdentityM(mMVMatrix,0);//set the model view  matrix to an identity matrix
         Matrix.setIdentityM(mModelMatrix,0);//set the model matrix to an identity matrix
-        Matrix.setRotateM(mRotationMatrix2, 0, 30, 0f, 1f, 0);//rotate around the y-axis
-        Matrix.setRotateM(mRotationMatrix, 0, 30, 1f, 0f, 0);//rotate around the x-axis
+        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0,  1.0f, 0);//rotate around the y-axis
+        Matrix.setRotateM(mRotationMatrix2, 0, mXAngle, 1.0f, 0, 0);//rotate around the x-axis
+
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
                 0.0f, 0f, 1.0f,//camera is at (0,0,1)
                 0f, 0f, 0f,//looks at the origin
                 0f, 1f, 0.0f);//head is down (set to (0,1,0) to look from the top)
-        Matrix.translateM(mModelMatrix,0,0.0f,0.0f,-5f);//move backward for 5 units
+        Matrix.translateM(mModelMatrix,0,0.0f,0.0f,-5f+mZoom);//move backward for 5 units
         Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, mRotationMatrix, 0);
         Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, mRotationMatrix2, 0);
         // Calculate the projection and view transformation
@@ -75,4 +81,18 @@ public class MyRenderer implements GLSurfaceView.Renderer {
 
         mcharA.draw(mMVPMatrix);
     }
+
+    public float getAngle() {
+        return mAngle;
+    }
+    public void setAngle(float angle) {
+        mAngle = angle;
+    }
+    public void setXAngle(float angle){mXAngle=angle;}
+    public float getXAngle(){return mXAngle;}
+    public void setZoom(float zoom)
+    {
+        mZoom=zoom;
+    }
+
 }
