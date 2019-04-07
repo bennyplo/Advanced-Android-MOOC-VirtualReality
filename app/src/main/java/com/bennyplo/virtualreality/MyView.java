@@ -15,7 +15,7 @@ public class MyView extends GLSurfaceView {
     private float mViewScaledTouchSlop;//number of pixels that a finger is allowed to move
     public MyView(Context context) {
         super(context);
-        setEGLContextClientVersion(2);// Create an OpenGL ES 2.0 context.
+        setEGLContextClientVersion(3);// Create an OpenGL ES 2.0 context.
         mRenderer = new MyRenderer();// Set the Renderer for drawing on the GLSurfaceView
         setRenderer(mRenderer);
         final ViewConfiguration viewConfig = ViewConfiguration.get(context);//get the view configuration
@@ -109,7 +109,7 @@ public class MyView extends GLSurfaceView {
                         dy = dy * -1;
                     }
                     //set the rotation angles
-                    mRenderer.setAngle( mRenderer.getAngle() + ((dx) * TOUCH_SCALE_FACTOR));
+                    mRenderer.setYAngle( mRenderer.getYAngle() + ((dx) * TOUCH_SCALE_FACTOR));
                     mRenderer.setXAngle((mRenderer.getXAngle() +(dy * TOUCH_SCALE_FACTOR)));
                     requestRender();
                 }
@@ -117,5 +117,13 @@ public class MyView extends GLSurfaceView {
         mPreviousX = x;
         mPreviousY = y;
         return true;
+    }
+    public void sensorRotates(float xangle,float yangle, float zangle)
+    {
+       //Log.i("SensorRotate:",xangle+","+yangle+","+zangle);
+        mRenderer.setYAngle(yangle);  // = 180.0f / 320
+        mRenderer.setXAngle(xangle);
+        mRenderer.setZAngle(zangle);
+        requestRender();
     }
 }

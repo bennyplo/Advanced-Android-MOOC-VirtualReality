@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.bennyplo.designgraphicswithopengl"
-        minSdkVersion 14
+        applicationId "com.bennyplo.virtualreality"
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"

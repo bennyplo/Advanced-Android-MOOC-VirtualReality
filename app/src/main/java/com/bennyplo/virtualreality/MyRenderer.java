@@ -14,17 +14,18 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];//view matrix
     private final float[] mMVMatrix=new float[16];//model view matrix
     private final float[] mModelMatrix=new float[16];//model  matrix
-    private CharacterA mcharA;
-    private float mAngle;//y-rotation angle
+    private float mYAngle;//y-rotation angle
     private float mXAngle;//x-rotation angle
+    private float mZAngle;//z-rotatino angle
     private float mZoom;//zoom factor
+    private Sphere msphere;
 
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        mcharA=new CharacterA();
+        msphere=new Sphere();
         mZoom=1.0f;
     }
     public static void checkGlError(String glOperation) {
@@ -55,6 +56,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 unused) {
         float[] mRotationMatrix = new float[16];
         float[] mRotationMatrix2 = new float[16];
+        float[] mRotationMatrix3 = new float[16];
         // Draw background color
         GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT | GLES32.GL_DEPTH_BUFFER_BIT);
         GLES32.glClearDepthf(1.0f);//set up the depth buffer
@@ -63,8 +65,9 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         Matrix.setIdentityM(mMVPMatrix,0);//set the model view projection matrix to an identity matrix
         Matrix.setIdentityM(mMVMatrix,0);//set the model view  matrix to an identity matrix
         Matrix.setIdentityM(mModelMatrix,0);//set the model matrix to an identity matrix
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0,  1.0f, 0);//rotate around the y-axis
+        Matrix.setRotateM(mRotationMatrix, 0, mYAngle, 0,  1.0f, 0);//rotate around the y-axis
         Matrix.setRotateM(mRotationMatrix2, 0, mXAngle, 1.0f, 0, 0);//rotate around the x-axis
+        Matrix.setRotateM(mRotationMatrix3, 0, mZAngle, 0, 0, 1);//rotate around the x-axis
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
@@ -74,22 +77,25 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         Matrix.translateM(mModelMatrix,0,0.0f,0.0f,-5f+mZoom);//move backward for 5 units
         Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, mRotationMatrix, 0);
         Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, mRotationMatrix2, 0);
+        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, mRotationMatrix3, 0);
         // Calculate the projection and view transformation
         //calculate the model view matrix
         Matrix.multiplyMM(mMVMatrix,0,mViewMatrix,0,mModelMatrix,0);
         Matrix.multiplyMM(mMVPMatrix,0,mProjectionMatrix,0,mMVMatrix,0);
 
-        mcharA.draw(mMVPMatrix);
+        msphere.draw(mMVPMatrix);
     }
     //set the rotational angles and zoom factors
-    public float getAngle() {
-        return mAngle;
+    public float getYAngle() {
+        return mYAngle;
     }
-    public void setAngle(float angle) {
-        mAngle = angle;
+    public void setYAngle(float angle) {
+        mYAngle = angle;
     }
     public void setXAngle(float angle){mXAngle=angle;}
     public float getXAngle(){return mXAngle;}
+    public void setZAngle(float angle){mZAngle=angle;}
+    public float getZAngle(){return mZAngle;}
     public void setZoom(float zoom)
     {
         mZoom=zoom;
