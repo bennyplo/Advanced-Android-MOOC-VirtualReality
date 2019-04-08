@@ -15,7 +15,7 @@ public class MyView extends GLSurfaceView {
     private float mViewScaledTouchSlop;//number of pixels that a finger is allowed to move
     public MyView(Context context) {
         super(context);
-        setEGLContextClientVersion(3);// Create an OpenGL ES 2.0 context.
+        setEGLContextClientVersion(2);// Create an OpenGL ES 2.0 context.
         mRenderer = new MyRenderer();// Set the Renderer for drawing on the GLSurfaceView
         setRenderer(mRenderer);
         final ViewConfiguration viewConfig = ViewConfiguration.get(context);//get the view configuration

@@ -293,7 +293,7 @@ public class Sphere {
         GLES32.glEnableVertexAttribArray(mPositionHandle);
         // Prepare the triangle coordinate data
         GLES32.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES32.GL_FLOAT, false, vertexStride, vertexBuffer);
-        //MyRenderer.checkGlError("glVertexAttribPointer");
+        MyRenderer.checkGlError("glVertexAttribPointer");
         mColorHandle=GLES32.glGetAttribLocation(mProgram,"aVertexColor");
         GLES32.glEnableVertexAttribArray(mColorHandle);
         GLES32.glVertexAttribPointer(mColorHandle, COLOR_PER_VERTEX, GLES32.GL_FLOAT, false, colorStride, colorBuffer);
@@ -301,7 +301,7 @@ public class Sphere {
         mNormalHandle=GLES32.glGetAttribLocation(mProgram,"aVertexNormal");
         GLES32.glEnableVertexAttribArray(mNormalHandle);
         GLES32.glVertexAttribPointer(mNormalHandle, COORDS_PER_VERTEX, GLES32.GL_FLOAT, false, vertexStride, normalBuffer);
-        //MyRenderer.checkGlError("glVertexAttribPointer");
+        MyRenderer.checkGlError("glVertexAttribPointer");
         // get handle to shape's transformation matrix
         pointLightingLocationHandle=GLES32.glGetUniformLocation(mProgram, "uPointLightingLocation");
         diffuseLightLocationHandle=GLES32.glGetUniformLocation(mProgram,"uDiffuseLightLocation");
@@ -311,7 +311,7 @@ public class Sphere {
         attenuation[0]=1;attenuation[1]=0.14f;attenuation[2]=0.07f;
         pointLightColorHandle=GLES32.glGetUniformLocation(mProgram, "uPointLightingColor");
         uAmbientColorHandle=GLES32.glGetUniformLocation(mProgram,"uAmbientColor");
-        //MyRenderer.checkGlError("uAmbientColor");
+        MyRenderer.checkGlError("uAmbientColor");
         specularColorHandle=GLES32.glGetUniformLocation(mProgram,"uSpecularColor");
         specularLightLocationHandle=GLES32.glGetUniformLocation(mProgram,"uSpecularLightLocation");
         materialShininessHandle=GLES32.glGetUniformLocation(mProgram,"uMaterialShininess");
@@ -320,21 +320,19 @@ public class Sphere {
         GLES32.glVertexAttribPointer(mTextureCoordHandle,TEXTURE_PER_VERTEX,GLES32.GL_FLOAT,false,textureStride,textureBuffer);
         TextureHandle=GLES32.glGetUniformLocation(mProgram,"uTextureSampler");//texture
         mMVPMatrixHandle = GLES32.glGetUniformLocation(mProgram, "uMVPMatrix");
-        //MyRenderer.checkGlError("glGetUniformLocation-mMVPMatrixHandle");
+        MyRenderer.checkGlError("glGetUniformLocation-mMVPMatrixHandle");
     }
 
     public void draw(float[] mvpMatrix) {
         GLES32.glUseProgram(mProgram);// Add program to OpenGL environment
         // Apply the projection and view transformation
         GLES32.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        //MyRenderer.checkGlError("glUniformMatrix4fv");
-        //GLES32.glUniform3f(pointLightingLocationHandle,lightlocation[0],lightlocation[1],lightlocation[2]);
+        MyRenderer.checkGlError("glUniformMatrix4fv");
         GLES32.glUniform3fv(pointLightingLocationHandle,1,lightlocation,0);
         GLES32.glUniform3fv(diffuseLightLocationHandle,1,diffuselightlocation,0);
         GLES32.glUniform4fv(diffuseColorHandle,1,diffusecolor,0);
         GLES32.glUniform3fv(attenuateHandle,1,attenuation,0);
         GLES32.glUniform3f(pointLightColorHandle,0.3f,0.3f,0.3f);
-        //GLES32.glUniform3f(uAmbientColorHandle,0.4f,0.4f,0.4f);
         GLES32.glUniform3f(uAmbientColorHandle,0.6f,0.6f,0.6f);
         GLES32.glUniform4fv(specularColorHandle,1,specularcolor,0);
         GLES32.glUniform1f(materialShininessHandle,MaterialShininess);
