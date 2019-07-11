@@ -28,33 +28,6 @@ public class MyView extends GLSurfaceView {
     private float mPreviousX;//previous touch x position
     private float mPreviousY;//previous touch y position
 
-    public float distance(MotionEvent e, int first, int second) {//distance between 2 touch motion events
-        if (e.getPointerCount() >= 2) {
-            final float x = e.getX(first) - e.getX(second);
-            final float y = e.getY(first) - e.getY(second);
-            return (float) Math.sqrt(x * x + y * y);//Euclidean distance
-        } else {
-            return 0;
-        }
-    }
-    private boolean isPinchGesture(MotionEvent event) {//check if it is a pinch gesture
-        if (event.getPointerCount() == 2) {//multi-touch
-            //check the distances between the touch locations
-            final float distanceCurrent = distance(event, 0, 1);
-            final float diffPrimX = m1TouchEventX - event.getX(0);
-            final float diffPrimY = m1TouchEventY - event.getY(0);
-            final float diffSecX = m2TouchEventX - event.getX(1);
-            final float diffSecY = m2TouchEventY - event.getY(1);
-
-            if ( Math.abs(distanceCurrent - mTouchDistance) > mViewScaledTouchSlop && (diffPrimY * diffSecY) <= 0
-                            && (diffPrimX * diffSecX) <= 0) {
-                //if the distance between the touch is above the threshold and the fingers are moving in opposing directions
-                return true;
-            }
-        }
-
-        return false;
-    }
     @Override
     public boolean onTouchEvent(MotionEvent e){//touch event
         float x = e.getX();//x position of the touch
@@ -117,6 +90,35 @@ public class MyView extends GLSurfaceView {
         mPreviousX = x;
         mPreviousY = y;
         return true;
+    }
+
+
+    public float distance(MotionEvent e, int first, int second) {//distance between 2 touch motion events
+        if (e.getPointerCount() >= 2) {
+            final float x = e.getX(first) - e.getX(second);
+            final float y = e.getY(first) - e.getY(second);
+            return (float) Math.sqrt(x * x + y * y);//Euclidean distance
+        } else {
+            return 0;
+        }
+    }
+    private boolean isPinchGesture(MotionEvent event) {//check if it is a pinch gesture
+        if (event.getPointerCount() == 2) {//multi-touch
+            //check the distances between the touch locations
+            final float distanceCurrent = distance(event, 0, 1);
+            final float diffPrimX = m1TouchEventX - event.getX(0);
+            final float diffPrimY = m1TouchEventY - event.getY(0);
+            final float diffSecX = m2TouchEventX - event.getX(1);
+            final float diffSecY = m2TouchEventY - event.getY(1);
+
+            if ( Math.abs(distanceCurrent - mTouchDistance) > mViewScaledTouchSlop && (diffPrimY * diffSecY) <= 0
+                    && (diffPrimX * diffSecX) <= 0) {
+                //if the distance between the touch is above the threshold and the fingers are moving in opposing directions
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
