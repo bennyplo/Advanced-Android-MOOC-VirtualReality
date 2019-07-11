@@ -118,12 +118,5 @@ public class MyView extends GLSurfaceView {
         mPreviousY = y;
         return true;
     }
-    public void sensorRotates(float xangle,float yangle, float zangle)
-    {
-       //Log.i("SensorRotate:",xangle+","+yangle+","+zangle);
-        mRenderer.setYAngle(yangle);  // = 180.0f / 320
-        mRenderer.setXAngle(xangle);
-        mRenderer.setZAngle(zangle);
-        requestRender();
-    }
+
 }
