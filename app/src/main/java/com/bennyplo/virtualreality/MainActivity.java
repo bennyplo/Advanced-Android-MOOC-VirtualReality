@@ -30,84 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private MyView GLView;
     private View mControlsView;
     private static Context mContext;//context of the activity
-    private static final int READ_TEXT_FILE_REQUEST_CODE=12;//read file request code
-    private static final int READ_IMAGE_FILE_REQUEST_CODE=13;//read image file request code
     public static Context getContext(){return mContext;}//get the activity context
-    public static String textfile;
-    public static Bitmap texturebitmap;//bitmap file for texture
-    public static Bitmap getTextureBitmap()
-    {
-        return texturebitmap;
-    }//get the bitmap for texture
 
-    private String getTextFile(Uri filepath) throws IOException {
-        //read the text file from the selected filepath
-        //set to read the file path first
-        ParcelFileDescriptor parcelFileDescriptor=getContentResolver().openFileDescriptor(filepath,"r");
-        FileDescriptor fileDescriptor=parcelFileDescriptor.getFileDescriptor();//get the descriptor of the file
-        FileInputStream fileInputStream = new FileInputStream(fileDescriptor);//get the file input stream from the file descriptor
-        StringBuilder stringBuilder=new StringBuilder();//create a string builder -> to create the string
-        //read the text from the file
-        int i=0;
-        while((i=fileInputStream.read())!=-1){
-            stringBuilder.append((char)i);
-        }
-        Log.i("ReadTextFile",stringBuilder.toString());
-        fileInputStream.close();
-        parcelFileDescriptor.close();
-        //ParseFileString(stringBuilder.toString());
-        return stringBuilder.toString();
-    }
-
-    public void FileTextSearch()
-    {//search for a file
-        Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);//set the intent to open a document
-        intent.addCategory(Intent.CATEGORY_OPENABLE);//select only those are openable
-        intent.setType("text/*");//set the type for searching
-        startActivityForResult(intent,READ_TEXT_FILE_REQUEST_CODE);//start the request
-    }
-
-    @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent resultData)
-    {//once the file has been selected
-        if (requestCode == READ_IMAGE_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = null;
-            if (resultData != null) {
-                uri = resultData.getData();
-                try { texturebitmap = getBitmapFile(uri); }//read the bitmap file
-                catch (IOException e)
-                { Log.i("MainActivity","get bitmap file error!"); }
-            }
-        }
-        else if (requestCode==READ_TEXT_FILE_REQUEST_CODE && resultCode== Activity.RESULT_OK)
-        {//handle the event from the read request only
-            Uri uri=null;
-            if (resultData!=null)
-            {   uri=resultData.getData();//get the url selected
-                try { textfile=getTextFile(uri);}//read the text file
-                catch (IOException e)
-                { Log.i("MainActivity","get file error!"); }
-            }
-        }
-    }
-    private Bitmap getBitmapFile(Uri filepath) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(filepath, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return bitmap;
-    }
-    public void ImageFileSearch() {//search for image file
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(intent, READ_IMAGE_FILE_REQUEST_CODE);
-    }
-    @Override
+     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext=this;//set the context
-        //FileTextSearch();//search for a file
-        //ImageFileSearch();//search for an image file
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         GLView =new MyView(this);

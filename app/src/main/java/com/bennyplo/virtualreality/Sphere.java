@@ -206,26 +206,6 @@ public class Sphere {
         return textureHandle[0];
     }
 
-    public static int LoadTextureFromFile()
-    {//load a texture image from file
-        final int[]textureHandle=new int [1];
-        GLES32.glGenTextures(1,textureHandle,0);
-        if (textureHandle[0]!=0) {
-            Bitmap bitmap=MainActivity.getTextureBitmap();
-            GLES32.glBindTexture(GLES32.GL_TEXTURE_2D, textureHandle[0]);
-            //set filtering
-            GLES32.glTexParameteri(GLES32.GL_TEXTURE_2D, GLES32.GL_TEXTURE_MIN_FILTER, GLES32.GL_NEAREST);
-            GLES32.glTexParameteri(GLES32.GL_TEXTURE_2D, GLES32.GL_TEXTURE_MAG_FILTER, GLES32.GL_NEAREST);
-            //load bitmap into bound texture
-            GLUtils.texImage2D(GLES32.GL_TEXTURE_2D, 0, bitmap, 0);
-            bitmap.recycle();
-        }
-        else {
-            throw new RuntimeException("Error loading texture!");
-        }
-        return textureHandle[0];
-    }
-
     public Sphere(){
 
         createShpere(2,30,30);
@@ -271,7 +251,6 @@ public class Sphere {
         specularlightlocation[2]=2;
         ///============
         TextureDataHandle = LoadTexture(MainActivity.getContext(), R.drawable.world);
-        //TextureDataHandle=LoadTextureFromFile();
         //////////////////////
         // prepare shaders and OpenGL program
         int vertexShader = MyRenderer.loadShader(GLES32.GL_VERTEX_SHADER, vertexShaderCode);
