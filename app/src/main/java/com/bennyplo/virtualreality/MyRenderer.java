@@ -18,6 +18,8 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private float mXAngle;//x-rotation angle
     private float mZoom;//zoom factor
     private Sphere msphere;
+    //private CharacterA mcharA;
+    private CharacterS mcharS;
 
 
     @Override
@@ -25,6 +27,8 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         msphere=new Sphere();
+        //mcharA=new CharacterA();
+        mcharS=new CharacterS();
         mZoom=1.0f;
     }
     public static void checkGlError(String glOperation) {
@@ -79,6 +83,8 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix,0,mProjectionMatrix,0,mMVMatrix,0);
 
         msphere.draw(mMVPMatrix);
+        //mcharA.draw(mMVPMatrix);
+        //mcharS.draw(mMVPMatrix);
     }
     //set the rotational angles and zoom factors
     public float getYAngle() {
